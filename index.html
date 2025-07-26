@@ -5,363 +5,421 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chai & Coffee Haven</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'chai-brown': '#8B4513',
-                        'coffee-dark': '#3E2723',
-                        'cream': '#F5F5DC'
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #8B4513 0%, #3E2723 100%);
+        :root {
+            --brown: #8B4513;
+            --coffee: #3E2723;
+            --cream: #F5F5DC;
         }
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+        .hero-bg {
+            background: linear-gradient(135deg, var(--brown) 0%, var(--coffee) 100%);
         }
-        .menu-item {
-            transition: all 0.3s ease;
+
+        .card {
+            background: var(--cream);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 12px;
         }
-        .menu-item:hover {
-            transform: scale(1.05);
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: var(--brown);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--coffee);
+            transform: scale(1.02);
+        }
+
+        .nav-item {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: var(--brown);
+        }
+
+        .price {
+            color: var(--brown);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: white;
+            padding: 16px 0;
+        }
+
+        .mobile-menu.show {
+            display: block;
+        }
+
+        input, textarea {
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--brown);
+        }
+
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+            }
+            .mobile-toggle {
+                display: none !important;
+            }
         }
     </style>
 </head>
-<body class="bg-cream">
-    <nav class="bg-white shadow-lg fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <div class="text-2xl font-bold text-chai-brown">☕ Chai & Coffee Haven</div>
+<body style="background-color: var(--cream);">
+    
+    <nav style="background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.07); position: fixed; width: 100%; z-index: 50; top: 0;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; height: 70px;">
+                <div>
+                    <span style="font-size: 28px; font-weight: 800; color: var(--brown);">☕ Chai & Coffee Haven</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-chai-brown transition-colors">Home</a>
-                    <a href="#menu" class="text-gray-700 hover:text-chai-brown transition-colors">Menu</a>
-                    <a href="#about" class="text-gray-700 hover:text-chai-brown transition-colors">About</a>
-                    <a href="#contact" class="text-gray-700 hover:text-chai-brown transition-colors">Contact</a>
+                
+                <div class="desktop-nav" style="display: none; gap: 32px;">
+                    <a href="#home" class="nav-item">Home</a>
+                    <a href="#menu" class="nav-item">Menu</a>
+                    <a href="#about" class="nav-item">About</a>
+                    <a href="#contact" class="nav-item">Contact</a>
                 </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+                
+                <button class="mobile-toggle" id="menuBtn" style="background: none; border: none; color: #4a5568; display: block;">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="#home" class="block py-2 text-gray-700 hover:text-chai-brown">Home</a>
-                <a href="#menu" class="block py-2 text-gray-700 hover:text-chai-brown">Menu</a>
-                <a href="#about" class="block py-2 text-gray-700 hover:text-chai-brown">About</a>
-                <a href="#contact" class="block py-2 text-gray-700 hover:text-chai-brown">Contact</a>
+            
+            <div id="mobileMenu" class="mobile-menu">
+                <a href="#home" class="nav-item" style="display: block; padding: 12px 0;">Home</a>
+                <a href="#menu" class="nav-item" style="display: block; padding: 12px 0;">Menu</a>
+                <a href="#about" class="nav-item" style="display: block; padding: 12px 0;">About</a>
+                <a href="#contact" class="nav-item" style="display: block; padding: 12px 0;">Contact</a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="gradient-bg text-white pt-20">
-        <div class="max-w-7xl mx-auto px-4 py-20">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6">Welcome to Chai & Coffee Haven</h1>
-                <p class="text-xl md:text-2xl mb-8">Where every sip tells a story</p>
-                <button class="bg-white text-chai-brown px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-                    Explore Our Menu
-                </button>
-            </div>
+    <section id="home" class="hero-bg" style="color: white; padding-top: 70px;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 80px 24px; text-align: center;">
+            <h1 style="font-size: clamp(48px, 8vw, 84px); font-weight: 900; margin-bottom: 24px; line-height: 1.1;">Welcome to Chai & Coffee Haven</h1>
+            <p style="font-size: clamp(20px, 3vw, 28px); margin-bottom: 32px; opacity: 0.95;">Where every sip tells a story</p>
+            <button class="btn" style="font-size: 18px; padding: 16px 32px;">Explore Our Menu</button>
         </div>
     </section>
 
-    <section id="menu" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-chai-brown mb-12">Our Menu</h2>
+    <section id="menu" style="padding: 80px 0; background: white;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <h2 style="font-size: 48px; font-weight: 800; text-align: center; color: var(--brown); margin-bottom: 60px;">Our Menu</h2>
             
-            <div class="mb-16">
-                <h3 class="text-2xl font-semibold text-coffee-dark mb-8 text-center">☕ Coffee Collection</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Classic Espresso</h4>
-                        <p class="text-gray-600 mb-4">Rich and bold single shot of pure coffee perfection</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹60</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+            <div style="margin-bottom: 80px;">
+                <h3 style="font-size: 32px; font-weight: 700; color: var(--coffee); margin-bottom: 40px; text-align: center;">☕ Coffee Collection</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                    
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Classic Espresso</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Rich and bold single shot of pure coffee perfection</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹60</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Cappuccino</h4>
-                        <p class="text-gray-600 mb-4">Perfect blend of espresso, steamed milk, and foam</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹150</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Cappuccino</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Perfect blend of espresso, steamed milk, and foam</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹150</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Latte</h4>
-                        <p class="text-gray-600 mb-4">Smooth espresso with velvety steamed milk</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹200</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Latte</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Smooth espresso with velvety steamed milk</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹200</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Cold Brew</h4>
-                        <p class="text-gray-600 mb-4">Slow-steeped coffee served chilled and bold</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹180</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Cold Brew</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Slow-steeped coffee served chilled and bold</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹180</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Mocha</h4>
-                        <p class="text-gray-600 mb-4">Chocolate and espresso with steamed milk</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹220</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Mocha</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Chocolate and espresso with steamed milk</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹220</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Macchiato</h4>
-                        <p class="text-gray-600 mb-4">Espresso topped with a small amount of milk foam</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹140</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Macchiato</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Espresso topped with a small amount of milk foam</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹140</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Filter Coffee</h4>
-                        <p class="text-gray-600 mb-4">South Indian traditional strong decoction coffee</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹80</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Filter Coffee</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">South Indian traditional strong decoction coffee</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹80</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Affogato</h4>
-                        <p class="text-gray-600 mb-4">A scoop of vanilla ice cream drowned in espresso</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹190</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Affogato</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">A scoop of vanilla ice cream drowned in espresso</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹190</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="bg-cream rounded-lg p-6 text-center opacity-70">
-                        <div class="text-4xl mb-4">☕</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">More Coffee Options Coming Soon!</h4>
-                        <p class="text-gray-600">Look out for new arrivals like Turkish Coffee, Nitro Brew, and more delights!</p>
+                    <div class="card" style="padding: 32px; text-align: center; opacity: 0.8;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☕</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">More Coffee Options Coming Soon!</h4>
+                        <p style="color: #6b7280; line-height: 1.6;">Look out for new arrivals like Turkish Coffee, Nitro Brew, and more delights!</p>
                     </div>
-
                 </div>
             </div>
 
             <div>
-                <h3 class="text-2xl font-semibold text-coffee-dark mb-8 text-center">🫖 Chai Collection</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Masala Chai</h4>
-                        <p class="text-gray-600 mb-4">Traditional Indian spiced tea with milk</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹40</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Ginger Chai</h4>
-                        <p class="text-gray-600 mb-4">Spicy ginger-infused chai for warmth</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹30</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Cardamom Chai</h4>
-                        <p class="text-gray-600 mb-4">Aromatic cardamom-spiced chai</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹50</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Tulsi Chai</h4>
-                        <p class="text-gray-600 mb-4">Refreshing blend with holy basil for immunity</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹35</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Elaichi Chai</h4>
-                        <p class="text-gray-600 mb-4">Fragrant chai with crushed cardamom pods</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹45</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Lemon Chai</h4>
-                        <p class="text-gray-600 mb-4">Tangy, caffeine-free lemon-infused tea</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹30</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Sulaimani Chai</h4>
-                        <p class="text-gray-600 mb-4">Black tea with lemon and subtle spices</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹25</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 card-hover">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">Irani Chai</h4>
-                        <p class="text-gray-600 mb-4">Creamy and strong Hyderabadi-style chai</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-chai-brown font-bold">₹55</span>
-                            <button class="bg-chai-brown text-white px-4 py-2 rounded hover:bg-coffee-dark transition-colors">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-cream rounded-lg p-6 text-center opacity-70">
-                        <div class="text-4xl mb-4">🫖</div>
-                        <h4 class="text-xl font-semibold text-coffee-dark mb-2">More Chai Varieties Coming Soon!</h4>
-                        <p class="text-gray-600">Stay tuned for exciting new blends like Rose Chai, Chocolate Chai, and more!</p>
-                    </div>
-
+                <h3 style="font-size: 32px; font-weight: 700; color: var(--coffee); margin-bottom: 40px; text-align: center;">🫖 Chai Collection</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
                     
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Masala Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Traditional Indian spiced tea with milk</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹40</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Ginger Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Spicy ginger-infused chai for warmth</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹30</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Cardamom Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Aromatic cardamom-spiced chai</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹50</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Tulsi Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Refreshing blend with holy basil for immunity</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹35</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Elaichi Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Fragrant chai with crushed cardamom pods</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹45</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Lemon Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Tangy, caffeine-free lemon-infused tea</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹30</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Sulaimani Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Black tea with lemon and subtle spices</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹25</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">Irani Chai</h4>
+                        <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;">Creamy and strong Hyderabadi-style chai</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="price">₹55</span>
+                            <button class="btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 32px; text-align: center; opacity: 0.8;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🫖</div>
+                        <h4 style="font-size: 24px; font-weight: 700; color: var(--coffee); margin-bottom: 12px;">More Chai Varieties Coming Soon!</h4>
+                        <p style="color: #6b7280; line-height: 1.6;">Stay tuned for exciting new blends like Rose Chai, Chocolate Chai, and more!</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-20 bg-cream">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+    <section id="about" style="padding: 80px 0; background-color: var(--cream);">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center;">
                 <div>
-                    <h2 class="text-4xl font-bold text-chai-brown mb-6">Our Story</h2>
-                    <p class="text-lg text-gray-700 mb-6">
+                    <h2 style="font-size: 48px; font-weight: 800; color: var(--brown); margin-bottom: 32px;">Our Story</h2>
+                    <p style="font-size: 20px; color: #374151; margin-bottom: 24px; line-height: 1.7;">
                         Founded in 2020, Chai & Coffee Haven began as a small dream to bring authentic flavors to our community. 
                         We source the finest coffee beans and tea leaves from around the world to create memorable experiences.
                     </p>
-                    <p class="text-lg text-gray-700 mb-6">
+                    <p style="font-size: 20px; color: #374151; margin-bottom: 40px; line-height: 1.7;">
                         Our baristas are trained in traditional brewing methods, ensuring every cup is crafted with care and passion. 
                         Whether you prefer the boldness of coffee or the comfort of chai, we have something special for you.
                     </p>
-                    <div class="flex space-x-4">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-chai-brown">500+</div>
-                            <div class="text-gray-600">Happy Customers</div>
+                    <div style="display: flex; gap: 48px; flex-wrap: wrap;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: 800; color: var(--brown);">500+</div>
+                            <div style="color: #6b7280; font-weight: 500;">Happy Customers</div>
                         </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-chai-brown">50+</div>
-                            <div class="text-gray-600">Unique Blends</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: 800; color: var(--brown);">50+</div>
+                            <div style="color: #6b7280; font-weight: 500;">Unique Blends</div>
                         </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-chai-brown">4.8★</div>
-                            <div class="text-gray-600">Average Rating</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: 800; color: var(--brown);">4.8★</div>
+                            <div style="color: #6b7280; font-weight: 500;">Average Rating</div>
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
-                    <div class="bg-white rounded-lg p-8 shadow-lg">
-                        <div class="text-6xl mb-4">🏆</div>
-                        <h3 class="text-2xl font-semibold text-chai-brown mb-4">Award Winning</h3>
-                        <p class="text-gray-600">Recognized for our exceptional quality and service in 2023</p>
+                <div style="text-align: center; margin-top: 40px;">
+                    <div style="background: white; border-radius: 16px; padding: 48px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                        <div style="font-size: 72px; margin-bottom: 20px;">🏆</div>
+                        <h3 style="font-size: 28px; font-weight: 700; color: var(--brown); margin-bottom: 16px;">Award Winning</h3>
+                        <p style="color: #6b7280; font-size: 18px; line-height: 1.6;">Recognized for our exceptional quality and service in 2023</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-chai-brown mb-12">Get In Touch</h2>
-            <div class="grid md:grid-cols-2 gap-12">
+    <section id="contact" style="padding: 80px 0; background: white;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <h2 style="font-size: 48px; font-weight: 800; text-align: center; color: var(--brown); margin-bottom: 60px;">Get In Touch</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 60px;">
                 <div>
-                    <h3 class="text-2xl font-semibold text-coffee-dark mb-6">Contact Information</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <div class="text-2xl mr-4">📍</div>
+                    <h3 style="font-size: 32px; font-weight: 700; color: var(--coffee); margin-bottom: 32px;">Contact Information</h3>
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <div style="display: flex; align-items: flex-start;">
+                            <div style="font-size: 32px; margin-right: 20px;">📍</div>
                             <div>
-                                <div class="font-semibold">Address</div>
-                                <div class="text-gray-600">Oxford Street, Chandigarh</div>
+                                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">Address</div>
+                                <div style="color: #6b7280; font-size: 16px;">Oxford Street, Chandigarh</div>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <div class="text-2xl mr-4">📞</div>
+                        <div style="display: flex; align-items: flex-start;">
+                            <div style="font-size: 32px; margin-right: 20px;">📞</div>
                             <div>
-                                <div class="font-semibold">Phone</div>
-                                <div class="text-gray-600">+91 842 128 3412</div>
+                                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">Phone</div>
+                                <div style="color: #6b7280; font-size: 16px;">+91 842 128 3412</div>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <div class="text-2xl mr-4">✉️</div>
+                        <div style="display: flex; align-items: flex-start;">
+                            <div style="font-size: 32px; margin-right: 20px;">✉️</div>
                             <div>
-                                <div class="font-semibold">Email</div>
-                                <div class="text-gray-600">ayushpremrocks@gmail.com</div>
+                                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">Email</div>
+                                <div style="color: #6b7280; font-size: 16px;">ayushpremrocks@gmail.com</div>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <div class="text-2xl mr-4">🕒</div>
+                        <div style="display: flex; align-items: flex-start;">
+                            <div style="font-size: 32px; margin-right: 20px;">🕒</div>
                             <div>
-                                <div class="font-semibold">Timing and Hours</div>
-                                <div class="text-gray-600">Monday-Sunday: 7:00 AM - 9:00 PM</div>
+                                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">Timing and Hours</div>
+                                <div style="color: #6b7280; font-size: 16px;">Monday-Sunday: 7:00 AM - 9:00 PM</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-semibold text-coffee-dark mb-6">Send us a Message</h3>
-                    <form class="space-y-4">
+                    <h3 style="font-size: 32px; font-weight: 700; color: var(--coffee); margin-bottom: 32px;">Send us a Message</h3>
+                    <form id="contactForm" style="display: flex; flex-direction: column; gap: 20px;">
                         <div>
-                            <label class="block text-gray-700 mb-2">Name</label>
-                            <input type="text" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-chai-brown" required>
+                            <label style="display: block; color: #374151; margin-bottom: 8px; font-weight: 500;">Name</label>
+                            <input type="text" required>
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-2">Email</label>
-                            <input type="email" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-chai-brown" required>
+                            <label style="display: block; color: #374151; margin-bottom: 8px; font-weight: 500;">Email</label>
+                            <input type="email" required>
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-2">Message</label>
-                            <textarea rows="4" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-chai-brown" required></textarea>
+                            <label style="display: block; color: #374151; margin-bottom: 8px; font-weight: 500;">Message</label>
+                            <textarea rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-chai-brown text-white py-3 rounded font-semibold hover:bg-coffee-dark transition-colors">
+                        <button type="submit" class="btn" style="width: 100%; padding: 16px; font-size: 18px;">
                             Send Message
                         </button>
                     </form>
@@ -370,87 +428,30 @@
         </div>
     </section>
 
-    <footer class="bg-coffee-dark text-white py-12">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8">
+    <footer style="background-color: var(--coffee); color: white; padding: 60px 0;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">☕ Chai & Coffee Haven</h3>
-                    <p class="text-gray-300">Bringing you the finest coffee and chai experiences since 2020.</p>
+                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">☕ Chai & Coffee Haven</h3>
+                    <p style="color: #d1d5db; line-height: 1.6;">Bringing you the finest coffee and chai experiences since 2020.</p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
-                        <li><a href="#menu" class="text-gray-300 hover:text-white transition-colors">Menu</a></li>
-                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors">About</a></li>
-                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li class="text-gray-300">Dine-in</li>
-                        <li class="text-gray-300">Takeaway</li>
-                        <li class="text-gray-300">Catering</li>
-                        <li class="text-gray-300">Events</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white transition-colors text-2xl">📘</a>
-                        <a href="#" class="text-gray-300 hover:text-white transition-colors text-2xl">📷</a>
-                        <a href="#" class="text-gray-300 hover:text-white transition-colors text-2xl">🐦</a>
-                        <a href="#" class="text-gray-300 hover:text-white transition-colors text-2xl">📱</a>
+                    <h4 style="font-weight: 700; margin-bottom: 20px; font-size: 18px;">Quick Links</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="#home" style="color: #d1d5db; text-decoration: none; transition: color 0.2s;">Home</a>
+                        <a href="#menu" style="color: #d1d5db; text-decoration: none; transition: color 0.2s;">Menu</a>
+                        <a href="#about" style="color: #d1d5db; text-decoration: none; transition: color 0.2s;">About</a>
+                        <a href="#contact" style="color: #d1d5db; text-decoration: none; transition: color 0.2s;">Contact</a>
                     </div>
                 </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-300">&copy; 2024 Chai & Coffee Haven. All rights reserved.</p>
-                <p class="text-gray-400 mt-2">
-                    Built with ☕ & ❤️ by 
-                    <a href="https://github.com/ayushpremrocks" target="_blank" class="text-chai-brown hover:underline">
-                        Ayush Prem
-                    </a>
-                </p>
-            </div>
-
-        </div>
-    </footer>
-
-    <script>
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            this.reset();
-        });
-
-        document.querySelectorAll('button').forEach(button => {
-            if (button.textContent === 'Add to Cart') {
-                button.addEventListener('click', function() {
-                    const itemName = this.parentElement.querySelector('h4').textContent;
-                    alert(`${itemName} added to cart!`);
-                });
-            }
-        });
-    </script>
-</body>
-</html> 
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 20px; font-size: 18px;">Services</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <span style="color: #d1d5db;">Dine-in</span>
+                        <span style="color: #d1d5db;">Takeaway</span>
+                        <span style="color: #d1d5db;">Catering</span>
+                        <span style="color: #d1d5db;">Events</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 20px; font-size: 18px;">Follow Us</h

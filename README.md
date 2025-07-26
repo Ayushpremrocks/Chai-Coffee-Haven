@@ -1,2 +1,2 @@
 ## Chai & Coffee Haven
-# Made by Ayush Prem
+Made by Ayush Prem
